@@ -8,7 +8,7 @@ function App() {
             <TextField variant="filled" label="Search Location" className="input" />
             <h1 className="city">Rome</h1>
             <div className="group">
-                <img src="" alt="" />
+                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="weather Icon" />
                 <h1>Clear</h1>
             </div>
 
