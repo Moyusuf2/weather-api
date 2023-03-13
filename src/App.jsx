@@ -1,11 +1,39 @@
-import { TextField, Slide } from "@mui/material";
+import { TextField, } from "@mui/material";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 
 function App() {
+    const [cityName, setCityName] = useState("Paris");
+    const [inputText, setInputText] = useState("");
+    const [data, setdata] = useState({});
+    useEffect(() => {
+        fetch(
+            //API info Hidden
+        )
+        .then((res) => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                throw new Error("Something went wrong")
+            }
+        })
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }, [cityName]);
+    console.log(inputText)
     return (
         <div className="bg_img">
-            <TextField variant="filled" label="Search Location" className="input" />
+            <TextField variant="filled" 
+            label="Search Location"
+            autoComplete="off"
+             className="input" 
+             value={inputText}
+             onChange={(e) => setInputText(e.target.value)}/>
             <h1 className="city">Rome</h1>
             <div className="group">
                 <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="weather Icon" />
