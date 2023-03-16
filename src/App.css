@@ -13,11 +13,12 @@ body {
     width: 100%;
     min-height: 100vh;
     background: url(images/bg.jpg);
-    background-size:40%;
+    background-size:100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-repeat: no-repeat;
 }
 .input {
     background-color: rgb(255,255,2555, 0.75);

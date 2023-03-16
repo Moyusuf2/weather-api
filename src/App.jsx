@@ -1,72 +1,90 @@
-import { TextField, } from "@mui/material";
+
+
+import { CircularProgress, Slide, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./App.css";
 
-
 function App() {
-    const [cityName, setCityName] = useState("Paris");
-    const [inputText, setInputText] = useState("");
-    const [data, setdata] = useState({});
-    useEffect(() => {
-        fetch(
-            //API info Hidden
-        )
-        .then((res) => {
-            if (res.status === 200) {
-                return res.json();
-            } else {
-                throw new Error("Something went wrong")
-            }
-        })
-        .then((data) => {
-            console.log(data);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    }, [cityName]);
-    console.log(inputText)
-    return (
-        <div className="bg_img">
-            <TextField variant="filled" 
-            label="Search Location"
-            autoComplete="off"
-             className="input" 
-             value={inputText}
-             onChange={(e) => setInputText(e.target.value)}/>
-            <h1 className="city">Rome</h1>
-            <div className="group">
-                <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="weather Icon" />
-                <h1>Clear</h1>
-            </div>
+  const [cityName, setCityName] = useState("Rome");
+  const [inputText, setInputText] = useState("");
+  const [data, setData] = useState({});
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-            <h1 className="temp">5 </h1>
+  useEffect(() => {
+    fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=e440369ef4452066cd619e46003883b9&units=imperial`
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          error && setError(false);
+          return res.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then((data) => {
+        setData(data);
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, [cityName, error]);
 
-            {/* <Slide direction="right" timeout={800}> */}
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      setCityName(e.target.value);
+      setInputText("");
+    }
+  };
+
+  return (
+    <div className="bg_img">
+      {!loading ? (
+        <>
+          <TextField
+            variant="filled"
+            label="Search location"
+            className="input"
+            error={error}
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={handleSearch}
+          />
+          <h1 className="city">{data.name}</h1>
+          <div className="group">
+            <img
+              src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+              alt=""
+            />
+            <h1>{data.weather[0].main}</h1>
+          </div>
+
+          <h1 className="temp">{data.main.temp.toFixed()} °C</h1>
+
+          <Slide direction="right" timeout={800} in={!loading}>
             <div className="box_container">
-                <div className="box">
-                    <p>Humidity</p>
-                    <h1>12%</h1>
-                </div>
-            </div>
+              <div className="box">
+                <p>Humidity</p>
+                <h1>{data.main.humidity.toFixed()}%</h1>
+              </div>
 
-            <div className="box_container">
-                <div className="box">
-                    <p>wind</p>
-                    <h1>5 km/h</h1>
-                </div>
-            </div>
+              <div className="box">
+                <p>Wind</p>
+                <h1>{data.wind.speed.toFixed()} km/h</h1>
+              </div>
 
-            <div className="box_container">
-                <div className="box">
-                    <p>Feels Like</p>
-                    <h1>4 °C</h1>
-                </div>
+              <div className="box">
+                <p>Feels Like</p>
+                <h1>{data.main.feels_like.toFixed()} °C</h1>
+              </div>
             </div>
-
-            {/* </Slide> */}
-        </div>
-    );
+          </Slide>
+        </>
+      ) : (
+        <CircularProgress />
+      )}
+    </div>
+  );
 }
 
 export default App;
