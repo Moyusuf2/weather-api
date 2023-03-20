@@ -59,7 +59,7 @@ function App() {
             <h1>{data.weather[0].main}</h1>
           </div>
 
-          <h1 className="temp">{data.main.temp.toFixed()} °C</h1>
+          <h1 className="temp">{data.main.temp.toFixed()} °F</h1>
 
           <Slide direction="right" timeout={800} in={!loading}>
             <div className="box_container">
@@ -70,12 +70,12 @@ function App() {
 
               <div className="box">
                 <p>Wind</p>
-                <h1>{data.wind.speed.toFixed()} km/h</h1>
+                <h1>{data.wind.speed.toFixed()} mph</h1>
               </div>
 
               <div className="box">
                 <p>Feels Like</p>
-                <h1>{data.main.feels_like.toFixed()} °C</h1>
+                <h1>{data.main.feels_like.toFixed()} °F</h1>
               </div>
             </div>
           </Slide>
